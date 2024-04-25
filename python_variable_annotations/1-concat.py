@@ -4,6 +4,7 @@ This module contains a type-annotated function 'concat'
 that concatenates two strings.
 """
 
+
 def concat(str1: str, str2: str) -> str:
     """
     Concatenates two strings str1 and str2,
