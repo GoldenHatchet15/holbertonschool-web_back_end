@@ -1,33 +1,33 @@
 #!/usr/bin/env python3
-'''
-Coroutine that spawns wait_random multiple times concurrently and returns
-the list of delays in ascending order based on completion.
-'''
+"""
+Test file for printing the correct output of the wait_n coroutine
+"""
 import asyncio
 from 0-basic_async_syntax import wait_random
 
 
 async def wait_n(n: int, max_delay: int) -> list:
     """
-    Spawns wait_random n times with the specified max_delay. Returns the list
-    of all the delays (float values) in ascending order as they complete.
+    Spawns wait_random n times with the specified max_delay.
+    Collects and returns the list of all delays (float values) 
+    as they finish.
     
     Args:
-    n (int): The number of times to spawn wait_random.
-    max_delay (int): The maximum delay for wait_random.
+    n (int): Number of concurrent calls to wait_random.
+    max_delay (int): Maximum delay value for wait_random.
     
     Returns:
-    list: Delays in ascending order of completion.
+    list: Delays collected in the order of completion.
     """
-    tasks = [asyncio.create_task(wait_random(max_delay)) for _ in range(n)]
-    delays = []
-    for task in asyncio.as_completed(tasks):
-        delay = await task
-        delays.append(delay)
-    return delays
+    tasks = [wait_random(max_delay) for _ in range(n)]
+    completed_delays = []
+    for future in asyncio.as_completed(tasks):
+        result = await future
+        completed_delays.append(result)
+    return completed_delays
 
 if __name__ == "__main__":
-    # Testing the function with different inputs
+    # Ensure your main testing logic here
     print(asyncio.run(wait_n(5, 5)))
     print(asyncio.run(wait_n(10, 7)))
     print(asyncio.run(wait_n(10, 0)))
