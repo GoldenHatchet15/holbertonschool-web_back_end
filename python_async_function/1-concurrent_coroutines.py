@@ -7,7 +7,6 @@ from typing import List
 
 wait_random = __import__('0-basic_async_syntax').wait_random
 
-
 async def wait_n(n: int, max_delay: int) -> List[float]:
     """
     Executes multiple coroutines at the same time with async.
@@ -17,7 +16,12 @@ async def wait_n(n: int, max_delay: int) -> List[float]:
     async def add_delay(delay: float):
         delays.append(delay)
 
-    tasks = [wait_random(max_delay) for _ in range(n)]
-    await asyncio.gather(*(add_delay(await task) for task in tasks))
+    tasks = []
+    for _ in range(n):
+        task = asyncio.create_task(wait_random(max_delay))
+        tasks.append(task)
+
+    for task in tasks:
+        await task
 
     return sorted(delays)
