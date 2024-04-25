@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import math
 """
 This module contains a type-annotated function 'floor'
 that computes the floor of a float.
@@ -16,4 +15,5 @@ def floor(n: float) -> int:
     Returns:
     int: The floor value of n.
     """
+    import math
     return math.floor(n)
