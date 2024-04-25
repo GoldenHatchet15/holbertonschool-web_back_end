@@ -25,9 +25,3 @@ async def wait_n(n: int, max_delay: int) -> list:
         result = await future
         completed_delays.append(result)
     return completed_delays
-
-if __name__ == "__main__":
-    # Ensure your main testing logic here
-    print(asyncio.run(wait_n(5, 5)))
-    print(asyncio.run(wait_n(10, 7)))
-    print(asyncio.run(wait_n(10, 0)))
