@@ -6,6 +6,7 @@ the list of delays in ascending order based on completion.
 import asyncio
 from 0-basic_async_syntax import wait_random
 
+
 async def wait_n(n: int, max_delay: int) -> list:
     """
     Spawns wait_random n times with the specified max_delay. Returns the list
