@@ -3,7 +3,7 @@
 Test file for printing the correct output of the wait_n coroutine
 """
 import asyncio
-from 0-basic_async_syntax import wait_random
+from basic_async_syntax import wait_random
 
 
 async def wait_n(n: int, max_delay: int) -> list:
