@@ -1,21 +1,16 @@
 #!/usr/bin/env python3
+import asyncio
+import random
+"""
+This module contains a type-annotated coroutine 'wait_random'
+that takes in an integer argument and returns a float.
+"""
 
 
 async def wait_random(max_delay: int = 10) -> float:
     """
-    Asynchronously waits for a random delay
-    between 0 and max_delay seconds
-    and returns the delay.
-
-    Args:
-    max_delay (int): Maximum delay value, default is 10.
-
-    Returns:
-    float: The actual delay.
+    Asynchronous coroutine that takes in an integer argument
     """
-    import asyncio
-    import random
-
-    delay = random.uniform(0, max_delay)
+    delay = max_delay * random.random()
     await asyncio.sleep(delay)
     return delay
