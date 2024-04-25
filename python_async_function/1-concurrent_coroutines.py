@@ -1,27 +1,23 @@
 #!/usr/bin/env python3
 """
-Test file for printing the correct output of the wait_n coroutine
+This module contains a type-annotated function 'wait_random'
 """
 import asyncio
-from basic_async_syntax import wait_random
+import random
+
+
+async def wait_random(max_delay: int) -> float:
+    """Wait for a random delay and return the delay time."""
+    delay = random.uniform(0, max_delay)
+    await asyncio.sleep(delay)
+    return delay
 
 
 async def wait_n(n: int, max_delay: int) -> list:
-    """
-    Spawns wait_random n times with the specified max_delay.
-    Collects and returns the list of all delays (float values) 
-    as they finish.
-    
-    Args:
-    n (int): Number of concurrent calls to wait_random.
-    max_delay (int): Maximum delay value for wait_random.
-    
-    Returns:
-    list: Delays collected in the order of completion.
-    """
-    tasks = [wait_random(max_delay) for _ in range(n)]
+    """Spawn wait_random n times with the specified max_delay and return sorted list of delays."""
+    tasks = [asyncio.create_task(wait_random(max_delay)) for _ in range(n)]
     completed_delays = []
-    for future in asyncio.as_completed(tasks):
-        result = await future
-        completed_delays.append(result)
+    for task in asyncio.as_completed(tasks):
+        delay = await task
+        completed_delays.append(delay)
     return completed_delays
