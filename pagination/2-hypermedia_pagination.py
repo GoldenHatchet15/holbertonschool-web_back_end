@@ -9,8 +9,12 @@ from typing import List, Dict
 
 index_range = __import__('0-simple_helper_function').index_range
 
+
 class Server:
-    """Server class to paginate a database of popular baby names with hypermedia."""
+    """
+    Server class to paginate a database
+    of popular baby names with hypermedia.
+    """
 
     DATA_FILE = "Popular_Baby_Names.csv"
 
@@ -22,7 +26,8 @@ class Server:
         Cached dataset.
 
         Returns:
-            List[List]: The dataset loaded from the CSV file, excluding the header.
+            List[List]: The dataset loaded
+            from the CSV file, excluding the header.
         """
         if self.__dataset is None:
             with open(self.DATA_FILE, mode='r', newline='') as f:
@@ -48,7 +53,10 @@ class Server:
 
         start_index, end_index = index_range(page, page_size)
         dataset = self.dataset()
-        return dataset[start_index:end_index] if start_index < len(dataset) else []
+        if start_index < len(dataset):
+            return dataset[start_index:end_index]
+        else:
+            return []
 
     def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict[str, any]:
         """
