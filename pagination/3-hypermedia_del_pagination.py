@@ -11,7 +11,10 @@ index_range = __import__('0-simple_helper_function').index_range
 
 
 class Server:
-    """Server class to paginate a database of popular baby names with hypermedia."""
+    """
+    Server class to paginate a database
+    of popular baby names with hypermedia.
+    """
 
     DATA_FILE = "Popular_Baby_Names.csv"
 
@@ -23,7 +26,8 @@ class Server:
         Cached dataset.
 
         Returns:
-            List[List]: The dataset loaded from the CSV file, excluding the header.
+            List[List]: The dataset loaded from the CSV file,
+            excluding the header.
         """
         if self.__dataset is None:
             with open(self.DATA_FILE, mode='r', newline='') as f:
@@ -42,12 +46,17 @@ class Server:
         Returns:
             List[List]: A list of rows from the dataset representing the page.
         """
-        assert isinstance(page, int) and page > 0, "Page must be a positive integer."
-        assert isinstance(page_size, int) and page_size > 0, "Page size must be a positive integer."
+        assert isinstance(page, int) and page > 0, \
+            "Page must be a positive integer."
+        assert isinstance(page_size, int) and page_size > 0, \
+            "Page size must be a positive integer."
 
         start_index, end_index = index_range(page, page_size)
         dataset = self.dataset()
-        return dataset[start_index:end_index] if start_index < len(dataset) else []
+        if start_index < len(dataset):
+            return dataset[start_index:end_index]
+        else:
+            return []
 
     def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict[str, any]:
         """
@@ -70,14 +79,3 @@ class Server:
             'prev_page': page - 1 if page > 1 else None,
             'total_pages': total_pages
         }
-
-if __name__ == "__main__":
-    server = Server()
-
-    print(server.get_hyper(1, 2))
-    print("---")
-    print(server.get_hyper(2, 2))
-    print("---")
-    print(server.get_hyper(100, 3))
-    print("---")
-    print(server.get_hyper(3000, 100))
