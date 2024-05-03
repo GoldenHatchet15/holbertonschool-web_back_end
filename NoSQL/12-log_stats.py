@@ -15,6 +15,7 @@ def log_stats(mongo_collection):
     status_check_count = mongo_collection.count_documents({"method": "GET", "path": "/status"})
     print(f"{status_check_count} status check")
 
+
 def main():
     """ Main function """
     # Connection to the MongoDB server
