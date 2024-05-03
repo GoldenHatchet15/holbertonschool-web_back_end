@@ -1,25 +1,26 @@
 #!/usr/bin/env python3
-""" 0-simple_helper_function """
-from typing import Tuple
+"""
+Module to calculate index range for pagination.
+"""
 
 
-def index_range(page: int, page_size: int) -> tuple[int, int]:
+def index_range(page: int, page_size: int) -> tuple:
     """
-    Return a tuple of start and end indexes for pagination.
+    Calculate the start and end index for a page of items.
 
     Args:
-        page (int): The page number, 1-indexed.
-        page_size (int): The number of items per page.
+    page (int): The current page number (1-indexed).
+    page_size (int): The number of items per page.
 
     Returns:
-        tuple: A tuple containing start and end indexes.
+    tuple: A tuple containing the start index and the end index of the items for the requested page.
     """
     start_index = (page - 1) * page_size
     end_index = page * page_size
-    return start_index, end_index
+    return (start_index, end_index)
 
-# Testing the function
 if __name__ == "__main__":
+    # Testing the function with example inputs
     res = index_range(1, 7)
     print(type(res))
     print(res)
