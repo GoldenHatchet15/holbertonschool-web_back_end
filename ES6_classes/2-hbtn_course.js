@@ -1,5 +1,3 @@
-// 2-hbtn_course.js
-
 export default class HolbertonCourse {
   constructor(name, length, students) {
     this.name = name;
@@ -7,7 +5,7 @@ export default class HolbertonCourse {
     this.students = students;
   }
 
-  // Getters and setters for name
+  // Getter and setter for name
   get name() {
     return this._name;
   }
@@ -19,7 +17,7 @@ export default class HolbertonCourse {
     this._name = newName;
   }
 
-  // Getters and setters for length
+  // Getter and setter for length
   get length() {
     return this._length;
   }
@@ -31,13 +29,13 @@ export default class HolbertonCourse {
     this._length = newLength;
   }
 
-  // Getters and setters for students
+  // Getter and setter for students
   get students() {
     return this._students;
   }
 
   set students(newStudents) {
-    if (!Array.isArray(newStudents) || newStudents.some(student => typeof student !== 'string')) {
+    if (!Array.isArray(newStudents) || newStudents.some((student) => typeof student !== 'string')) {
       throw new TypeError('Students must be an array of strings');
     }
     this._students = newStudents;
