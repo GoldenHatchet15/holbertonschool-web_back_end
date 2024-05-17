@@ -1,14 +1,21 @@
-// 0-promise.js
+// 1-promise.js
 
 /**
- * This function returns a new Promise that resolves immediately.
- * @returns {Promise<void>} A promise that resolves with no value.
+ * This function returns a promise that resolves or rejects based on the input boolean.
+ * @param {boolean} success - Determines whether the promise should resolve or reject.
+ * @returns {Promise<Object|Error>} A promise that resolves with an object if true, or rejects with an Error if false.
  */
-function getResponseFromAPI() {
+function getFullResponseFromAPI(success) {
     return new Promise((resolve, reject) => {
-        // This promise resolves immediately. You can modify the behavior as needed.
-        resolve();
+        if (success) {
+            resolve({
+                status: 200,
+                body: 'Success'
+            });
+        } else {
+            reject(new Error('The fake API is not working currently'));
+        }
     });
 }
 
-export default getResponseFromAPI;
+export default getFullResponseFromAPI;
