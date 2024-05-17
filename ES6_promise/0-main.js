@@ -1,4 +1,4 @@
-#!/usr/bin/node
+#!/usr/bin/env node
 // This is the main file that will be used to test 
 // the function getResponseFromAPI from 0-promise.js
 import getResponseFromAPI from "./0-promise.js";
