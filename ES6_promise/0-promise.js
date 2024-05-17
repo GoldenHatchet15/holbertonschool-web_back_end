@@ -1,14 +1,17 @@
 // 0-promise.js
 
 /**
- * Simulates an API call and returns a promise that resolves after a short delay.
- * @return {Promise<string>} A promise that resolves with a message.
+ * Returns a promise that either resolves or rejects based on a condition.
+ * @return {Promise<string>} A promise that might resolve with a success message or reject with an error.
  */
 export default function getResponseFromAPI() {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve("Success: API response received");
-      }, 1000); // Simulates a delay of 1000 milliseconds (1 second)
+    return new Promise((resolve, reject) => {
+      const success = true; // Simulate success or failure
+      if (success) {
+        resolve("Success: Data fetched successfully");
+      } else {
+        reject(new Error("Failure: Unable to fetch data"));
+      }
     });
   }
   
