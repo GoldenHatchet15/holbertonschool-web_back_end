@@ -1,4 +1,3 @@
-#!/usr/bin/node
 /**
  * Returns a new Promise that resolves immediately.
  * 
