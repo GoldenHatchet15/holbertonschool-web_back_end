@@ -1,7 +1,14 @@
-export default function handleResponseFromAPI(promise) {
-    return promise
-      .then(() => ({ status: 200, body: 'success' }))
-      .catch(() => new Error())
-      .finally(() => console.log('Got a response from the API'));
-  }
-  
+// 0-promise.js
+
+/**
+ * This function returns a new Promise that resolves immediately.
+ * @returns {Promise<void>} A promise that resolves with no value.
+ */
+function getResponseFromAPI() {
+    return new Promise((resolve, reject) => {
+        // This promise resolves immediately. You can modify the behavior as needed.
+        resolve();
+    });
+}
+
+export default getResponseFromAPI;
