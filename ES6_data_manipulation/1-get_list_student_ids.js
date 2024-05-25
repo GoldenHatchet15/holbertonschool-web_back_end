@@ -1,13 +1,10 @@
-// 1-get_list_student_ids.js
+function getListStudentIds(students) {
+  if (!Array.isArray(students)) {
+    return [];
+  }
+  return students.map(function (student) {
+    return student.id;
+  });
+}
 
-const getListStudentIds = function (students) {
-    if (!Array.isArray(students)) {
-      return [];
-    }
-    return students.map(function (student) {
-      return student.id;
-    });
-};
-  
 export default getListStudentIds;
-  
