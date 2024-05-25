@@ -1,12 +1,8 @@
-class StudentUtils {
-  static getListStudentIds(students) {
-    if (!Array.isArray(students)) {
-      return [];
-    }
-    return students.map(function (student) {
-      return student.id;
-    });
+const getListStudentIds = (students) => {
+  if (!Array.isArray(students)) {
+    return [];
   }
-}
+  return students.map(student => student.id);
+};
 
-export default StudentUtils.getListStudentIds;
+export default getListStudentIds;
