@@ -2,10 +2,9 @@
 
 function getListStudents() {
   const students = [
-    { id: 1, name: 'John Doe', age: 24 },
-    { id: 2, name: 'Jane Doe', age: 25 },
-    { id: 3, name: 'Alice Jones', age: 23 },
-    { id: 4, name: 'Bob Jones', age: 24 },
+    { id: 1, name: 'Guillaume', location: 'San Francisco'},
+    { id: 2, name: 'James', location: 'Columbia'},
+    { id: 5, name: 'Serena', location: 'San Francisco'},
   ];
   return students;
 }
