@@ -1,14 +1,13 @@
-// 0-get_list_students.js
+// 0-getliststudents.js
 
-const getListStudents = (function() {
+function getListStudents() {
   const students = [
-    { id: 1, firstName: 'Guillaume', location: 'San Francisco' },
-    { id: 2, firstName: 'James', location: 'Columbia' },
-    { id: 5, firstName: 'Serena', location: 'San Francisco' }
+    { id: 1, name: 'John Doe', age: 24 },
+    { id: 2, name: 'Jane Doe', age: 25 },
+    { id: 3, name: 'Alice Jones', age: 23 },
+    { id: 4, name: 'Bob Jones', age: 24 },
   ];
-  return function() {
-    return students;
-  };
-})();
+  return students;
+}
 
 export default getListStudents;
