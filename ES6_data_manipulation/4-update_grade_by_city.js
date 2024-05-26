@@ -1,13 +1,15 @@
-function updateStudentGradeByCity(students, city, newGrades) {
+const updateStudentGradeByCity = (students, city, newGrades) => {
+  const gradesMap = newGrades.reduce((acc, { studentId, grade }) => {
+    acc[studentId] = grade;
+    return acc;
+  }, {});
+
   return students
     .filter((student) => student.location === city)
-    .map((student) => {
-      const newGrade = newGrades.find((grade) => grade.studentId === student.id);
-      return {
-        ...student,
-        grade: newGrade ? newGrade.grade : 'N/A',
-      };
-    });
-}
+    .map((student) => ({
+      ...student,
+      grade: gradesMap[student.id] || 'N/A',
+    }));
+};
 
 export default updateStudentGradeByCity;
