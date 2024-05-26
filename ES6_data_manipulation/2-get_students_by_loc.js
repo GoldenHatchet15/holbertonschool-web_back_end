@@ -3,6 +3,6 @@ const getStudentsByLocation = (students, city) => {
     return [];
   }
   return students.filter((student) => student.location === city);
-}
+};
 
 export default getStudentsByLocation;
