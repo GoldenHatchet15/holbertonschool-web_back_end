@@ -1,4 +1,4 @@
-const updateStudentGradeByCity = (students, city, newGrades) => {
+function updateStudentGradeByCity(students, city, newGrades) {
   if (!Array.isArray(students) || typeof city !== 'string' || !Array.isArray(newGrades)) {
     return [];
   }
@@ -9,6 +9,6 @@ const updateStudentGradeByCity = (students, city, newGrades) => {
       const gradeObj = newGrades.find(grade => grade.studentId === student.id);
       return { ...student, grade: gradeObj ? gradeObj.grade : 'N/A' };
     });
-};
+}
 
 export default updateStudentGradeByCity;
