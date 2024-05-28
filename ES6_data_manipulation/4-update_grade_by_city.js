@@ -1,5 +1,5 @@
 const updateStudentGradeByCity = (students, city, newGrades) => {
-  if (!Array.isArray(students)) {
+  if (!Array.isArray(students) || typeof city !== 'string' || !Array.isArray(newGrades)) {
     return [];
   }
 
