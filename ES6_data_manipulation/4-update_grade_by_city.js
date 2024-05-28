@@ -1,5 +1,16 @@
 function updateStudentGradeByCity(students, city, newGrades) {
-  if (!Array.isArray(students) || typeof city !== 'string' || !Array.isArray(newGrades)) {
+  // Check if students is an array
+  if (!Array.isArray(students)) {
+    return [];
+  }
+
+  // Check if city is a string
+  if (typeof city !== 'string') {
+    return [];
+  }
+
+  // Check if newGrades is an array
+  if (!Array.isArray(newGrades)) {
     return [];
   }
 
