@@ -1,10 +1,13 @@
-#!/usr/bin/env python3
+#!/usr/bin/venv python3
 """
 Filtering module
 """
 import logging
 import re
 from typing import List
+import mysql.connector
+from mysql.connector import connection
+import os
 
 # Define PII fields to be obfuscated in the logs
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
@@ -79,7 +82,7 @@ def get_logger() -> logging.Logger:
 
 def get_db() -> connection.MySQLConnection:
     """
-    Connects to the MySQL database using credentials 
+    Connects to the MySQL database using credentials
     from environment variables.
 
     Returns:
