@@ -80,25 +80,27 @@ def get_logger() -> logging.Logger:
     return logger
 
 
-def get_db() -> connection.MySQLConnection:
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    """ Function that connect to secure database.
+        Return:
+            A connector to the database.
     """
-    Connects to the MySQL database using credentials from environment variables.
-    """
-    username = os.getenv('PERSONAL_DATA_DB_USERNAME', 'root')
-    password = os.getenv('PERSONAL_DATA_DB_PASSWORD', '')
-    host = os.getenv('PERSONAL_DATA_DB_HOST', 'localhost')
-    database = os.getenv('PERSONAL_DATA_DB_NAME')
-
-    # Print the environment variables to verify
-    print(f"Username: {username}")
-    print(f"Password: {password}")
-    print(f"Host: {host}")
-    print(f"Database: {database}")
-
     return mysql.connector.connect(
-        user=username,
-        password=password,
-        host=host,
-        database=database
+        host=os.getenv('PERSONAL_DATA_DB_HOST'),
+        database=os.getenv('PERSONAL_DATA_DB_NAME'),
+        user=os.getenv('PERSONAL_DATA_DB_USERNAME'),
+        password=os.getenv('PERSONAL_DATA_DB_PASSWORD')
     )
 
+
+def main():
+    """ Function that database connection using get_db and
+        retrieve all rows in the users table.
+    """
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM users;")
+
+
+if __name__ == "__main__":
+    main()
