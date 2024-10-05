@@ -8,6 +8,7 @@ from typing import List
 import mysql.connector
 from mysql.connector import connection
 import os
+from os import environ
 
 # Define PII fields to be obfuscated in the logs
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
@@ -81,26 +82,22 @@ def get_logger() -> logging.Logger:
 
 
 def get_db() -> mysql.connector.connection.MySQLConnection:
-    """ Function that connect to secure database.
-        Return:
-            A connector to the database.
     """
+    Connects to a secure MySQL database using credentials from environment variables.
+
+    Returns:
+        mysql.connector.connection.MySQLConnection: A connector to the MySQL database.
+    """
+    # Retrieve environment variables for the database connection
+    username = os.getenv('PERSONAL_DATA_DB_USERNAME', 'root')
+    password = os.getenv('PERSONAL_DATA_DB_PASSWORD', '')
+    host = os.getenv('PERSONAL_DATA_DB_HOST', 'localhost')
+    db_name = os.getenv('PERSONAL_DATA_DB_NAME')
+
+    # Establish connection to the database
     return mysql.connector.connect(
-        host=os.getenv('PERSONAL_DATA_DB_HOST'),
-        database=os.getenv('PERSONAL_DATA_DB_NAME'),
-        user=os.getenv('PERSONAL_DATA_DB_USERNAME'),
-        password=os.getenv('PERSONAL_DATA_DB_PASSWORD')
+        user=username,
+        password=password,
+        host=host,
+        database=db_name
     )
-
-
-def main():
-    """ Function that database connection using get_db and
-        retrieve all rows in the users table.
-    """
-    db = get_db()
-    cursor = db.cursor()
-    cursor.execute("SELECT * FROM users;")
-
-
-if __name__ == "__main__":
-    main()
