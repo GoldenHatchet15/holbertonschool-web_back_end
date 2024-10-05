@@ -6,7 +6,7 @@ from typing import List
 def filter_datum(fields: List[str], redaction: str,
                  message: str, separator: str) -> str:
     """
-    Obfuscates the values of specified fields in a log message.
+    Function to hide personal data.
 
     Args:
         fields (List[str]): Fields to be obfuscated.
@@ -17,10 +17,7 @@ def filter_datum(fields: List[str], redaction: str,
     Returns:
         str: The log message with obfuscated fields.
     """
-    # Join the fields into a single regex pattern
-    pattern = f"({'|'.join(re.escape(field)
-                           for field in fields)})=(.*?){re.escape(separator)}"
-
-    # Use re.sub to replace the matched field values with the redaction
-    return re.sub(pattern, lambda m: f"{m.group(1)}={
-                  redaction}{separator}", message)
+    for field in fields:
+        message = re.sub(rf"{re.escape(field)}=(.*?){re.escape(separator)}",
+                         f'{field}={redaction}{separator}', message)
+    return message
