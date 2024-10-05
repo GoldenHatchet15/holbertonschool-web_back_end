@@ -48,18 +48,19 @@ class RedactingFormatter(logging.Formatter):
         return filter_datum(self.fields, self.REDACTION,
                             original_message, self.SEPARATOR)
 
+
 def get_logger() -> logging.Logger:
     """
     Creates and returns a logger object with specified settings.
-    
+
     The logger will obfuscate PII and log up to INFO level.
     """
     # Create a logger named "user_data"
     logger = logging.getLogger("user_data")
-    
+
     # Set log level to INFO
     logger.setLevel(logging.INFO)
-    
+
     # Prevent propagation to parent loggers
     logger.propagate = False
 
