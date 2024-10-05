@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+Filtering module
+"""
 import re
 from typing import List
 
