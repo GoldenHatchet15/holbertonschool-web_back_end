@@ -79,8 +79,11 @@ def main():
 
     for row in cursor:
         # Create a log message string by joining fields
-        log_message = "; ".join([f"{field}={value}" for field, value in zip(field_names, row)]) + ";"
+        log_message = ("; ".join([f"{field}={value}"
+            for field, value in zip(field_names, row)]) + ";"
+            )
         logger.info(log_message)
+        
 
     cursor.close()
     db.close()
