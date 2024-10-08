@@ -1,4 +1,5 @@
 #!/usr/bin/venv python3
+
 """
 Filtering module
 """
@@ -8,49 +9,17 @@ from typing import List
 import mysql.connector
 from mysql.connector import connection
 import os
-from os import environ
 
-# Define PII fields to be obfuscated in the logs
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
 
 def filter_datum(fields: List[str], redaction: str,
                  message: str, separator: str) -> str:
-    """
-    Function to hide personal data.
-
-    Args:
-        fields (List[str]): Fields to be obfuscated.
-        redaction (str): String used to replace field values.
-        message (str): Log message containing fields.
-        separator (str): Character separating fields in the log message.
-
-    Returns:
-        str: The log message with obfuscated fields.
-    """
+    """ Returns the log message obfuscated """
     for field in fields:
         message = re.sub(rf"{re.escape(field)}=(.*?){re.escape(separator)}",
                          f'{field}={redaction}{separator}', message)
     return message
-
-
-class RedactingFormatter(logging.Formatter):
-    """ Redacting Formatter class for filtering PII data """
-
-    REDACTION = "***"
-    FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
-    SEPARATOR = ";"
-
-    def __init__(self, fields: List[str]):
-        """ Initialize the formatter with a list of fields to redact """
-        super(RedactingFormatter, self).__init__(self.FORMAT)
-        self.fields = fields
-
-    def format(self, record: logging.LogRecord) -> str:
-        """ Format the log message by redacting sensitive information """
-        original_message = super().format(record)
-        return filter_datum(self.fields, self.REDACTION,
-                            original_message, self.SEPARATOR)
 
 
 def get_logger() -> logging.Logger:
@@ -83,10 +52,8 @@ def get_logger() -> logging.Logger:
 
 def get_db() -> mysql.connector.connection.MySQLConnection:
     """
-    Connects to a secure MySQL database using credentials from environment variables.
+    Connects to a secure MySQL database using credentials
 
-    Returns:
-        mysql.connector.connection.MySQLConnection: A connector to the MySQL database.
     """
     # Retrieve environment variables for the database connection
     username = os.getenv('PERSONAL_DATA_DB_USERNAME', 'root')
@@ -94,11 +61,44 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     host = os.getenv('PERSONAL_DATA_DB_HOST', 'localhost')
     db_name = os.getenv('PERSONAL_DATA_DB_NAME')
 
-    connect= mysql.connector.connect(
+    # Establish connection to the database
+    return mysql.connector.connect(
         user=username,
         password=password,
         host=host,
         database=db_name
     )
-    
-    return connect 
+
+
+class RedactingFormatter(logging.Formatter):
+    """ Redacting Formatter class for filtering PII data """
+
+    REDACTION = "***"
+    FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
+    SEPARATOR = ";"
+
+    def __init__(self, fields: List[str]):
+        """ Initialize the formatter with a list of fields to redact """
+        super(RedactingFormatter, self).__init__(self.FORMAT)
+        self.fields = fields
+
+    def format(self, record: logging.LogRecord) -> str:
+        """ Format the log message by redacting sensitive information """
+        original_message = super().format(record)
+        return filter_datum(self.fields, self.REDACTION,
+                            original_message, self.SEPARATOR)
+
+
+# Code to be executed when the script is run
+logger = get_logger()
+
+try:
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT COUNT(*) FROM users;")
+    for row in cursor:
+        print(row[0])
+    cursor.close()
+    db.close()
+except mysql.connector.Error as err:
+    logger.error(f"Error: {err}")
