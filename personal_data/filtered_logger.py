@@ -9,7 +9,9 @@ import re
 from typing import List
 from dotenv import load_dotenv
 
-load_dotenv()  # Load environment variables from .env file
+load_dotenv()
+
+
 
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
@@ -43,15 +45,16 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     host = environ.get("PERSONAL_DATA_DB_HOST", "localhost")
     db_name = environ.get("PERSONAL_DATA_DB_NAME")
 
-    cnct = mysql.connector.connect(user=username,
-                                   password=password,
-                                   host=host,
-                                   database=db_name)
+    cnct = mysql.connector.connection.MySQLConnection(user=username,
+                                                     password=password,
+                                                     host=host,
+                                                     database=db_name)
     return cnct
 
 
 class RedactingFormatter(logging.Formatter):
-    """ Redacting Formatter class """
+    """ Redacting Formatter class
+        """
 
     REDACTION = "***"
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
@@ -74,26 +77,19 @@ def main():
     Obtain a database connection using get_db and retrieves all rows
     in the users table and display each row under a filtered format
     """
-    try:
-        db = get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM users;")
-        field_names = [i[0] for i in cursor.description]
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM users;")
+    field_names = [i[0] for i in cursor.description]
 
-        logger = get_logger()
+    logger = get_logger()
 
-        for row in cursor:
-            str_row = ''.join(f'{f}={str(r)}; ' for r, f in zip(row, field_names))
-            logger.info(str_row.strip())
+    for row in cursor:
+        str_row = ''.join(f'{f}={str(r)}; ' for r, f in zip(row, field_names))
+        logger.info(str_row.strip())
 
-    except mysql.connector.Error as err:
-        logger.error(f"Database error: {err}")
-
-    finally:
-        if cursor:
-            cursor.close()
-        if db:
-            db.close()
+    cursor.close()
+    db.close()
 
 
 if __name__ == '__main__':
