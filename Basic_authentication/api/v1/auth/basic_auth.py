@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from typing import Tuple, TypeVar, Optional
 import base64
 from models.user import User
