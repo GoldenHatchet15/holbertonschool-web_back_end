@@ -8,7 +8,7 @@ from flask_cors import CORS
 from api.v1.views import app_views
 from api.v1.auth.auth import Auth  # Import the Auth class
 from api.v1.auth.basic_auth import BasicAuth  # Import the BasicAuth class
-from api.v1.auth.session_auth import SessionAuth
+from api.v1.auth.session_auth import SessionAuth  # Import the SessionAuth
 
 app = Flask(__name__)
 app.register_blueprint(app_views)
@@ -55,11 +55,17 @@ def before_request():
     excluded_paths = [
         '/api/v1/status/',
         '/api/v1/unauthorized/',
-        '/api/v1/forbidden/']
+        '/api/v1/forbidden/',
+        '/api/v1/auth_session/login/'  # Add the login path to excluded paths
+    ]
+
     if not auth.require_auth(request.path, excluded_paths):
         return
 
-    if auth.authorization_header(request) is None:
+    # If both the authorization header and session cookie are None, abort with
+    # 401
+    if auth.authorization_header(
+            request) is None and auth.session_cookie(request) is None:
         abort(401)
 
     request.current_user = auth.current_user(request)
