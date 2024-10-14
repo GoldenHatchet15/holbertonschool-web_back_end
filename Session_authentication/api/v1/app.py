@@ -8,6 +8,7 @@ from flask_cors import CORS
 from api.v1.views import app_views
 from api.v1.auth.auth import Auth  # Import the Auth class
 from api.v1.auth.basic_auth import BasicAuth  # Import the BasicAuth class
+from api.v1.auth.session_auth import SessionAuth  # Import the SessionAuth class
 
 app = Flask(__name__)
 app.register_blueprint(app_views)
@@ -18,6 +19,8 @@ AUTH_TYPE = getenv("AUTH_TYPE", None)
 
 if AUTH_TYPE == "basic_auth":
     auth = BasicAuth()
+elif AUTH_TYPE == "session_auth":  # New switch for session_auth
+    auth = SessionAuth()
 elif AUTH_TYPE == "auth":
     auth = Auth()
 
