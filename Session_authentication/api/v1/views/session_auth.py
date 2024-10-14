@@ -50,3 +50,17 @@ def logOut() -> str:
         return jsonify({}), 200
     else:
         return False, abort(404)
+
+
+@app_views.route('/auth_session/logout',
+                 methods=['DELETE'], strict_slashes=False)
+def logOut() -> str:
+    """ Route to log out the current user by destroying their session """
+    from api.v1.app import auth
+
+    # Call destroy_session to log out the user
+    if not auth.destroy_session(request):
+        abort(404)
+
+    # Return an empty JSON response if successful
+    return jsonify({}), 200
