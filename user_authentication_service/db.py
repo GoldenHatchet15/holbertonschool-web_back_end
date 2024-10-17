@@ -63,7 +63,7 @@ class DB:
             **kwargs: Arbitrary keyword arguments for attributes to update
 
         Raises:
-            ValueError: If any argument does not correspond to a valid attribute
+            ValueError: If any argument doesnt correspond to a valid attribute
         """
         user = self.find_user_by(id=user_id)
 
