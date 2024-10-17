@@ -66,19 +66,33 @@ class Auth:
             return None
 
     def destroy_session(self, user_id: int) -> None:
-        """Destroy the session of a user by setting session_id to None
-
-        Args:
-            user_id (int): The user's ID
-
-        Returns:
-            None
-        """
+        """Destroy the session of a user by setting session_id to None"""
         try:
-            # Find the user by user_id
             user = self._db.find_user_by(id=user_id)
-            # Set the user's session_id to None
             self._db.update_user(user.id, session_id=None)
         except NoResultFound:
             pass
-        # No need to raise an exception, just ignore if the user is not found
+
+    def get_reset_password_token(self, email: str) -> str:
+        """Generate a reset password token for the user
+
+        Args:
+            email (str): The user's email
+
+        Returns:
+            str: The reset token
+
+        Raises:
+            ValueError: If the user does not exist
+        """
+        try:
+            # Find the user by email
+            user = self._db.find_user_by(email=email)
+            # Generate a new UUID as the reset token
+            reset_token = _generate_uuid()
+            # Update the user's reset_token in the database
+            self._db.update_user(user.id, reset_token=reset_token)
+            # Return the reset token
+            return reset_token
+        except NoResultFound:
+            raise ValueError(f"User with email {email} does not exist")
