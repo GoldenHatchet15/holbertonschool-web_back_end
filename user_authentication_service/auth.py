@@ -46,22 +46,30 @@ class Auth:
             return False
 
     def create_session(self, email: str) -> str:
-        """Create a session ID for the user and return it
+        """Create a session ID for the user and return it"""
+        try:
+            user = self._db.find_user_by(email=email)
+            session_id = _generate_uuid()
+            self._db.update_user(user.id, session_id=session_id)
+            return session_id
+        except NoResultFound:
+            return None
+
+    def get_user_from_session_id(self, session_id: str) -> User:
+        """Find user by session ID
 
         Args:
-            email (str): The user's email
+            session_id (str): The session ID
 
         Returns:
-            str: The session ID or None if the user doesn't exist
+            User: The user object corresponding to the session ID or None
         """
+        if session_id is None:
+            return None
+
         try:
-            # Find the user by email
-            user = self._db.find_user_by(email=email)
-            # Generate a new session ID
-            session_id = _generate_uuid()
-            # Update the user's session_id in the database
-            self._db.update_user(user.id, session_id=session_id)
-            # Return the session ID
-            return session_id
+            # Find the user by session_id
+            user = self._db.find_user_by(session_id=session_id)
+            return user
         except NoResultFound:
             return None
