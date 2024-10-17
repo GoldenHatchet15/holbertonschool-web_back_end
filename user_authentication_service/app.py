@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 """
-Flask app for user registration, login, logout, and profile
+Flask app for user registration, login, logout, profile, and reset password
 """
 from flask import Flask, request, jsonify, abort, redirect
 from auth import Auth
 
 app = Flask(__name__)
 AUTH = Auth()
-
 
 @app.route('/users', methods=['POST'])
 def register_user():
@@ -23,7 +22,6 @@ def register_user():
         return jsonify({"email": user.email, "message": "user created"}), 200
     except ValueError:
         return jsonify({"message": "email already registered"}), 400
-
 
 @app.route('/sessions', methods=['POST'])
 def login():
@@ -45,7 +43,6 @@ def login():
     response.set_cookie("session_id", session_id)
     return response
 
-
 @app.route('/sessions', methods=['DELETE'])
 def logout():
     """DELETE /sessions route to log out a user"""
@@ -61,7 +58,6 @@ def logout():
     AUTH.destroy_session(user.id)
     return redirect('/')
 
-
 @app.route('/profile', methods=['GET'])
 def profile():
     """GET /profile route to retrieve a user's profile"""
@@ -76,6 +72,21 @@ def profile():
 
     return jsonify({"email": user.email}), 200
 
+@app.route('/reset_password', methods=['POST'])
+def get_reset_password_token():
+    """POST /reset_password route to generate a reset password token"""
+    email = request.form.get('email')
+
+    if not email:
+        return jsonify({"message": "email required"}), 400
+
+    try:
+        # Generate the reset password token
+        reset_token = AUTH.get_reset_password_token(email)
+        return jsonify({"email": email, "reset_token": reset_token}), 200
+    except ValueError:
+        # If the email is not found, return 403
+        abort(403)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
