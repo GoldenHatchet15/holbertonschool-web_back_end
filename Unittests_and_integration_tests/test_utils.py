@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Test the access_nested_map function."""
+"""Test the utility functions."""
 import unittest
 from unittest.mock import patch, MagicMock
 from parameterized import parameterized
-from utils import access_nested_map, get_json
+from utils import access_nested_map, get_json, memoize
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -41,7 +41,8 @@ class TestGetJson(unittest.TestCase):
     @patch('utils.requests.get')
     def test_get_json(self, test_url, test_payload, mock_get):
         """Test that get_json returns the expected payload."""
-        # Create a mock response object with the json method returning test_payload
+        # Create a mock response object with the json method returning
+        # test_payload
         mock_response = MagicMock()
         mock_response.json.return_value = test_payload
         mock_get.return_value = mock_response
@@ -54,6 +55,40 @@ class TestGetJson(unittest.TestCase):
 
         # Assert that the result is equal to the test_payload
         self.assertEqual(result, test_payload)
+
+
+class TestMemoize(unittest.TestCase):
+    """Test the memoize decorator."""
+
+    def test_memoize(self):
+        """
+        Test that a_method is only called once
+        even when a_property is accessed twice.
+        """
+
+        class TestClass:
+            def a_method(self):
+                return 42
+
+            @memoize
+            def a_property(self):
+                return self.a_method()
+
+        with patch.object(TestClass, 'a_method',
+                          return_value=42) as mock_method:
+            test_instance = TestClass()
+
+            # First access to a_property should call a_method
+            result1 = test_instance.a_property
+            # Second access to a_property should not call a_method again
+            result2 = test_instance.a_property
+
+            # Check that the results are correct
+            self.assertEqual(result1, 42)
+            self.assertEqual(result2, 42)
+
+            # Ensure a_method was called only once
+            mock_method.assert_called_once()
 
 
 if __name__ == "__main__":
