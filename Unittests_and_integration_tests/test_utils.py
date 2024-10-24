@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Test the access_nested_map function."""
 import unittest
 from parameterized import parameterized
 from utils import access_nested_map
@@ -17,16 +18,16 @@ class TestAccessNestedMap(unittest.TestCase):
         self.assertEqual(access_nested_map(nested_map, path), expected)
 
     @parameterized.expand([
-        ({}, ("a",)),
-        ({"a": 1}, ("a", "b")),
+        ({}, ("a",)),  # Test empty dict with non-existing key "a"
+        ({"a": 1}, ("a", "b")),  # Test with key "a" but missing key "b"
     ])
     def test_access_nested_map_exception(self, nested_map, path):
         """Test that access_nested_map raises a KeyError for invalid paths."""
         with self.assertRaises(KeyError) as context:
             access_nested_map(nested_map, path)
 
-        # Check that the exception message matches the missing key
-        self.assertEqual(str(context.exception), str(path[-1]))
+        # Ensure that the missing key is in the exception message
+        self.assertEqual(str(context.exception), repr(path[-1]))
 
 
 if __name__ == "__main__":
