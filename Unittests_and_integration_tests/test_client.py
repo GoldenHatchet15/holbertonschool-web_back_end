@@ -76,5 +76,25 @@ class TestGithubOrgClient(unittest.TestCase):
                 "https://api.github.com/orgs/test_org/repos")
 
 
+class TestGithubOrgClient(unittest.TestCase):
+    """Test the GithubOrgClient class."""
+
+    # Other test methods...
+
+    @parameterized.expand([
+        ({"license": {"key": "my_license"}}, "my_license", True),
+        ({"license": {"key": "other_license"}}, "my_license", False),
+        ({}, "my_license", False),  # Case with no license key
+    ])
+    def test_has_license(self, repo, license_key, expected):
+        """
+        Test that has_license returns
+        the correct boolean
+        based on license_key.
+        """
+        result = GithubOrgClient.has_license(repo, license_key)
+        self.assertEqual(result, expected)
+
+
 if __name__ == "__main__":
     unittest.main()
