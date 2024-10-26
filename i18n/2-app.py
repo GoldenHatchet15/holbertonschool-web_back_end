@@ -14,10 +14,9 @@ class Config:
 
 
 app.config.from_object(Config)
-babel = Babel(app)
+babel = Babel()
 
 
-@babel.locale_selector
 def get_locale():
     """
     Determine the best match
@@ -25,6 +24,10 @@ def get_locale():
     on request headers.
     """
     return request.accept_languages.best_match(app.config['LANGUAGES'])
+
+
+# Initialize Babel with locale selector function
+babel.init_app(app, locale_selector=get_locale)
 
 
 @app.route('/')
