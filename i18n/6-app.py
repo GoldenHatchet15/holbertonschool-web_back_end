@@ -9,6 +9,7 @@ from flask_babel import Babel, _
 app = Flask(__name__)
 babel = Babel()
 
+
 class Config:
     """
     Configuration class for Babel and Flask app.
@@ -21,6 +22,7 @@ class Config:
     LANGUAGES = ["en", "fr"]
     BABEL_DEFAULT_LOCALE = "en"
     BABEL_DEFAULT_TIMEZONE = "UTC"
+
 
 app.config.from_object(Config)
 
@@ -78,7 +80,9 @@ def get_locale():
     # 3. Fallback to request headers
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
+
 babel.init_app(app, locale_selector=get_locale)
+
 
 @app.route('/')
 def index():
