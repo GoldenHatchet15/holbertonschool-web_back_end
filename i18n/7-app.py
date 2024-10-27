@@ -12,6 +12,7 @@ from pytz.exceptions import UnknownTimeZoneError
 app = Flask(__name__)
 babel = Babel()
 
+
 class Config:
     """
     Configuration class for Babel and Flask app.
@@ -25,8 +26,9 @@ class Config:
     BABEL_DEFAULT_LOCALE = "en"
     BABEL_DEFAULT_TIMEZONE = "UTC"
 
+
 app.config.from_object(Config)
-babel.init_app(app, locale_selector=get_locale, timezone_selector=get_timezone)
+
 
 # Mock user database
 users = {
@@ -105,7 +107,9 @@ def get_timezone():
     # 3. Default to UTC if no valid timezone is found
     return app.config['BABEL_DEFAULT_TIMEZONE']
 
+
 babel.init_app(app, locale_selector=get_locale, timezone_selector=get_timezone)
+
 
 @app.route('/')
 def index():
