@@ -2,7 +2,6 @@
 """
 Flask app with i18n support using Flask-Babel.
 """
-
 from flask import Flask, render_template, request
 from flask_babel import Babel, _
 

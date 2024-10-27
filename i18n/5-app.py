@@ -2,13 +2,12 @@
 """
 Flask app with i18n support using Flask-Babel and mock login.
 """
+
 from flask import Flask, render_template, request, g
 from flask_babel import Babel, _
-from typing import Union, Dict
 
 app = Flask(__name__)
-babel = Babel(app)
-
+babel = Babel()
 
 class Config:
     """
@@ -23,8 +22,8 @@ class Config:
     BABEL_DEFAULT_LOCALE = "en"
     BABEL_DEFAULT_TIMEZONE = "UTC"
 
-
 app.config.from_object(Config)
+
 
 # Mock user database
 users = {
@@ -35,7 +34,7 @@ users = {
 }
 
 
-def get_user() -> Union[Dict, None]:
+def get_user():
     """
     Retrieves a user based on the login_as URL parameter.
 
@@ -57,7 +56,6 @@ def before_request():
     g.user = get_user()
 
 
-@babel.localeselector
 def get_locale():
     """
     Determine the best match for supported languages based on request args
@@ -73,6 +71,7 @@ def get_locale():
         return g.user['locale']
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
+babel.init_app(app, locale_selector=get_locale)
 
 @app.route('/')
 def index():
