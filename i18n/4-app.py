@@ -7,8 +7,6 @@ from flask import Flask, render_template, request
 from flask_babel import Babel, _
 
 app = Flask(__name__)
-babel = Babel(app)
-
 
 
 class Config:
@@ -26,6 +24,7 @@ class Config:
 
 
 app.config.from_object(Config)
+babel = Babel(app)
 
 
 def get_locale():
