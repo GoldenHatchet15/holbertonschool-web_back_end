@@ -99,3 +99,4 @@ class Cache:
         """ Method that get a int from bytes.
         """
         return int.from_bytes(data, byteorder)
+    
