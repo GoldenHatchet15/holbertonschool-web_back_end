@@ -1,6 +1,6 @@
--- Script to list Glam rock bands ranked by their longevity
+-- Adjusted script to handle multiple styles and ensure compatibility
 SELECT band_name,
-       IFNULL(YEAR(split) - YEAR(formed), YEAR(CURDATE()) - YEAR(formed)) AS lifespan
+       COALESCE(YEAR(split) - YEAR(formed), YEAR(CURDATE()) - YEAR(formed)) AS lifespan
 FROM metal_bands
-WHERE style = 'Glam rock'
+WHERE FIND_IN_SET('Glam rock', REPLACE(style, ' ', '')) > 0
 ORDER BY lifespan DESC;
